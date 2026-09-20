@@ -54,9 +54,10 @@ runs:
       shell: bash
       run: |
         set -euo pipefail
+        repository=$(printf '%s' "${GITHUB_REPOSITORY}" | jq -sRr @uri)
         res=$(curl -sS -w '\n%{http_code}' \
           -H "Authorization: Bearer ${{ inputs.token }}" \
-          "${{ inputs.panel-url }}/gha-bot/config")
+          "${{ inputs.panel-url }}/gha-bot/config?repository=${repository}")
         body=$(echo "$res" | head -n -1)
         status=$(echo "$res" | tail -n1)
         if [ "$status" != "200" ]; then
