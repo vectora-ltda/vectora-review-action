@@ -56,6 +56,7 @@ runs:
         set -euo pipefail
         res=$(curl -sS -w '\n%{http_code}' \
           -H "Authorization: Bearer ${{ inputs.token }}" \
+          --get --data-urlencode "repository=${{ github.repository }}" \
           "${{ inputs.panel-url }}/gha-bot/config")
         body=$(echo "$res" | head -n -1)
         status=$(echo "$res" | tail -n1)
